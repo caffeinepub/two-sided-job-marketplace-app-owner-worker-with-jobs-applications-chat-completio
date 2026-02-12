@@ -1,0 +1,77 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add phone number to profile flows and workers-needed to job creation/details (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-15",
+      "summary": "Collect and validate phone number during Role Select profile creation and submit it via React Query save-profile mutation.",
+      "acceptanceCriteria": [
+        "RoleSelectPage shows an additional input labeled \"Phone Number\".",
+        "Submitting the form without a phone number shows an English validation error and does not submit.",
+        "The phone number value is passed through React Query (`useSaveCallerUserProfile`) to the backend save profile method.",
+        "On success, the user proceeds as before (profile created and navigated to home)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update `useSaveCallerUserProfile` to accept `phoneNumber` and call the backend save-profile function with `displayName`, `role`, and `phoneNumber`. Ensure the existing `currentUserProfile` invalidation remains in place. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/RoleSelectPage.tsx",
+          "operation": "modify",
+          "description": "Add a required \"Phone Number\" input to the registration/profile creation form, add client-side validation (show an English error via existing toast on missing/invalid value), and include `phoneNumber` in the `useSaveCallerUserProfile().mutateAsync` payload while keeping navigation behavior unchanged on success. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Display the saved phone number on Profile page and allow editing/saving it using the existing profile-save flow.",
+      "acceptanceCriteria": [
+        "ProfilePage displays the current phone number when a profile exists.",
+        "ProfilePage provides an edit UI that allows changing the phone number and saving it.",
+        "Saving updates the backend profile and refreshes the `currentUserProfile` query so the updated phone number is shown."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ProfilePage.tsx",
+          "operation": "modify",
+          "description": "Extend the Personal Information section to show `userProfile.phoneNumber` when not editing, and add an edit UI (alongside display name) to change phone number and save. Reuse `useSaveCallerUserProfile` and ensure validation prevents saving when phone number is empty (and optionally basic format validation). Confirm save triggers `currentUserProfile` refresh and updated phone number is displayed. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Add Workers Needed input to Create Job form, submit it in create-job mutation, and display workers needed in job details and list summaries where feasible.",
+      "acceptanceCriteria": [
+        "CreateJobPage includes a required numeric input labeled \"Workers Needed\" with a minimum value of 1.",
+        "Create job submission includes `workersNeeded` in the mutation payload and calls the updated backend method.",
+        "JobDetailsPage displays the number of workers needed for the job in the job information section.",
+        "If job list items already show job metadata, they also show workers needed (or the field is shown at least on Job Details, even if not added to list UI)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update `useCreateJob` to accept `workersNeeded` in its mutation variables and call the backend create-job function with the new argument order including `workersNeeded`. Keep the existing jobs query invalidation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/CreateJobPage.tsx",
+          "operation": "modify",
+          "description": "Add a required numeric input labeled \"Workers Needed\" (min 1). Add state + validation to prevent submit when missing/invalid, convert to `BigInt` for the mutation payload, and pass `workersNeeded` into `createJob.mutateAsync` along with existing fields. Keep existing job assignment behavior unchanged. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/JobDetailsPage.tsx",
+          "operation": "modify",
+          "description": "Display `job.workersNeeded` in the job information section (near other metadata like pay/location) so users can see how many workers are needed. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/JobListPage.tsx",
+          "operation": "modify",
+          "description": "Where feasible within the existing card metadata area, display `job.workersNeeded` (e.g., alongside other quick facts) so list items show workers needed in addition to title/pay/location/date. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

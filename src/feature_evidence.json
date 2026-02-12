@@ -1,0 +1,66 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-collect-and-validate-a-phone-number-during-the-profile-creation-registration-flow-role-select-page-and-send-it-to-the-backend-when-creating-the-profile",
+      "featureTitle": "Collect and validate a phone number during the profile creation/registration flow (Role Select page) and send it to the backend when creating the profile.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/RoleSelectPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-show-the-saved-phone-number-on-the-profile-page-and-allow-the-user-to-edit-and-save-it-alongside-display-name-using-the-same-profile-save-mechanism",
+      "featureTitle": "Show the saved phone number on the Profile page and allow the user to edit and save it (alongside display name) using the same profile-save mechanism.",
+      "files": [
+        "frontend/src/pages/ProfilePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-allow-owners-to-select-the-number-of-workers-needed-when-creating-a-job-submit-it-to-the-backend-and-display-it-on-job-details-and-anywhere-job-summary-is-shown-where-feasible",
+      "featureTitle": "Allow owners to select the number of workers needed when creating a job, submit it to the backend, and display it on job details (and anywhere job summary is shown where feasible).",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/CreateJobPage.tsx",
+        "frontend/src/pages/JobDetailsPage.tsx",
+        "frontend/src/pages/JobListPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-18"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

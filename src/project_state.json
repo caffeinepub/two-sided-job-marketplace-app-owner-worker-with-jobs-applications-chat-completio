@@ -1,0 +1,229 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Design and build a two-sided job marketplace app with Owner and Worker roles, including authentication, role selection, job creation and applications, chat, payments, and ratings.",
+  "architectural_notes": [
+    "Two user roles: Owner and Worker with role-based permissions and navigation.",
+    "Extend user profile model to include phone number (with validation/format).",
+    "Extend job model to include workersNeeded (number of workers requested) and reflect it in create job + job details."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-the-app-s-screen-route-structure-and-navigation-for-these-screens-splash-login-register-role-select-owner-worker-home-create-job-owner-job-list-worker-owner-job-details-profile-and-chat",
+      "title": "Create the app’s screen/route structure and navigation for these screens: Splash, Login/Register, Role Select (Owner/Worker), Home, Create Job (Owner), Job List (Worker + Owner), Job Details, Profile, and Chat.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-authentication-using-internet-identity-and-persist-a-user-profile-record-keyed-by-the-authenticated-principal-including-selected-role-owner-or-worker-and-basic-profile-fields-e-g-display-name",
+      "title": "Implement authentication using Internet Identity and persist a user profile record keyed by the authenticated Principal, including selected role (Owner or Worker) and basic profile fields (e.g., display name).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-owner-flow-implement-create-job-screen-with-form-validation-and-submission-to-backend-show-owner-home-dashboard-actions-to-manage-their-jobs",
+      "title": "Owner flow: Implement Create Job screen with form validation and submission to backend; show Owner home/dashboard actions to manage their jobs.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-worker-flow-implement-job-list-and-job-details-ui-that-allows-workers-to-browse-open-jobs-and-view-full-details",
+      "title": "Worker flow: Implement Job List and Job Details UI that allows workers to browse open jobs and view full details.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-job-applications-workers-can-apply-to-open-jobs-owners-can-view-applicants-per-job-and-accept-exactly-one-worker-assign-the-job",
+      "title": "Implement job applications: workers can apply to open jobs; owners can view applicants per job and accept exactly one worker (assign the job).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-job-completion-owner-can-mark-an-assigned-job-as-completed-completion-timestamp-is-recorded",
+      "title": "Implement job completion: owner can mark an Assigned job as Completed; completion timestamp is recorded.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-1-1-in-app-chat-between-the-job-s-owner-and-the-assigned-worker-and-or-applicant-as-defined-by-the-job-state-stored-in-the-backend-and-displayed-in-the-chat-screen-using-polling-no-real-time-sockets",
+      "title": "Implement 1:1 in-app chat between the job’s owner and the assigned worker (and/or applicant, as defined by the job state), stored in the backend and displayed in the Chat screen using polling (no real-time sockets).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-get-paid-as-an-in-app-payout-record-when-a-job-is-completed-create-a-payable-payout-status-record-for-the-assigned-worker-and-show-it-in-worker-ui-e-g-paid-unpaid-allow-owner-to-mark-payout-as-paid-no-external-payment-processor-integration",
+      "title": "Implement “Get Paid” as an in-app payout record: when a job is Completed, create a payable/payout status record for the assigned worker and show it in Worker UI (e.g., Paid/Unpaid). Allow owner to mark payout as Paid (no external payment processor integration).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-ratings-after-job-completion-worker-can-rate-the-owner-e-g-1-5-stars-optional-comment-store-ratings-and-display-owner-s-aggregate-rating-on-relevant-screens-e-g-owner-profile",
+      "title": "Implement ratings: after job completion, worker can rate the owner (e.g., 1–5 stars + optional comment). Store ratings and display owner’s aggregate rating on relevant screens (e.g., Owner profile).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-profile-screen-show-current-user-s-role-principal-based-identifier-editable-display-name-and-role-specific-summary-owner-jobs-created-completed-worker-jobs-applied-assigned-completed-payouts",
+      "title": "Implement Profile screen: show current user’s role, principal-based identifier, editable display name, and role-specific summary (Owner: jobs created/completed; Worker: jobs applied/assigned/completed, payouts).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-choose-and-apply-a-coherent-visual-theme-for-the-app-colors-typography-layout-components-that-fits-a-job-marketplace-use-tailwind-shadcn-ui-components-consistently-across-all-screens-avoid-a-blue-purple-dominant-palette",
+      "title": "Choose and apply a coherent visual theme for the app (colors, typography, layout, components) that fits a job marketplace; use Tailwind + shadcn/ui components consistently across all screens (avoid a blue/purple-dominant palette).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-and-render-required-generated-static-images-logo-and-splash-illustration-from-frontend-public-assets-generated-and-use-them-in-the-splash-and-auth-related-screens",
+      "title": "Add and render required generated static images (logo and splash illustration) from frontend/public/assets/generated, and use them in the Splash and auth-related screens.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-collect-and-validate-a-phone-number-during-the-profile-creation-registration-flow-role-select-page-and-send-it-to-the-backend-when-creating-the-profile",
+      "title": "Collect and validate a phone number during the profile creation/registration flow (Role Select page) and send it to the backend when creating the profile.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-show-the-saved-phone-number-on-the-profile-page-and-allow-the-user-to-edit-and-save-it-alongside-display-name-using-the-same-profile-save-mechanism",
+      "title": "Show the saved phone number on the Profile page and allow the user to edit and save it (alongside display name) using the same profile-save mechanism.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-allow-owners-to-select-the-number-of-workers-needed-when-creating-a-job-submit-it-to-the-backend-and-display-it-on-job-details-and-anywhere-job-summary-is-shown-where-feasible",
+      "title": "Allow owners to select the number of workers needed when creating a job, submit it to the backend, and display it on job details (and anywhere job summary is shown where feasible).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create app screen structure: Splash, Login/Register, Role Select (Owner/Worker), Home, Create Job, Job List, Job Details, Profile, Chat",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Implement authentication for both user types (Register/Login)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Role selection flow and role-based navigation (Owner vs Worker experience)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Owner: Create job with title, description, hourly/daily type, amount, location",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Owner: View applicants, accept worker, and mark job complete",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Worker: Browse/view job list and job details; apply for jobs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "In-app chat between worker and owner",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Payments: Worker gets paid for completed jobs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Ratings: Worker can rate owner",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Backend: Add core data models and CRUD/query methods for jobs, including fields: ownerPrincipal, title, description, payType (Hourly/Daily), amount, location, status (Open/Assigned/Completed), createdAt.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add phone number field to registration/user profile (capture, validate, and persist)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Owner: allow selecting how many workers are needed for a job (e.g., workersNeeded field on job)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add a phone number field to the user profile data model and persist it per authenticated Principal.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Add a \"workersNeeded\" (how many workers are needed) field to the Job data model, store it for each job, and return it in job queries.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Two-sided job marketplace app (Owner/Worker) with jobs, applications, chat, completion, payouts, and ratings",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

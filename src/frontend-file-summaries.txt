@@ -1,0 +1,18 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, route definitions for all pages, and a properly named RootComponent that handles authentication flow and role selection using React hooks.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles (with phone number support), jobs (with workersNeeded support), applications, chat, payouts, and ratings with proper cache invalidation.",
+  "frontend/src/hooks/useCurrentUser.ts": "Custom hook that combines authentication state, actor readiness, and user profile data to provide derived flags for role-based UI logic.",
+  "frontend/src/components/AppLayout.tsx": "Shared layout wrapper component with navigation bar and footer that includes the required caffeine.ai attribution with UTM tracking.",
+  "frontend/src/components/NavBar.tsx": "Top navigation bar with role-aware menu items, logo, and login/logout functionality using shadcn/ui components.",
+  "frontend/src/components/LoginButton.tsx": "Reusable authentication button component that handles Internet Identity login/logout with proper error handling and query cache clearing.",
+  "frontend/src/pages/SplashPage.tsx": "Landing page with hero section, splash illustration, app logo, feature highlights for owners and workers, and call-to-action button.",
+  "frontend/src/pages/AuthPage.tsx": "Authentication page with Internet Identity login integration and app logo display.",
+  "frontend/src/pages/RoleSelectPage.tsx": "Role selection page where new users choose between Owner and Worker roles, set their display name and phone number with validation.",
+  "frontend/src/pages/HomePage.tsx": "Role-specific dashboard showing relevant statistics, quick actions, and recent activity for both owners and workers.",
+  "frontend/src/pages/CreateJobPage.tsx": "Job creation form for owners with validation for title, description, pay type, amount, workers needed (minimum 1), and location fields.",
+  "frontend/src/pages/JobListPage.tsx": "Job listing page showing all jobs for owners or open jobs for workers with status badges, filtering, and workers needed displayed in each job card.",
+  "frontend/src/pages/JobDetailsPage.tsx": "Comprehensive job details view showing workers needed alongside other job metadata, with role-specific actions including apply, view applicants, assign worker, complete job, chat access, payout management, and rating submission.",
+  "frontend/src/pages/ChatPage.tsx": "Real-time chat interface with polling for job-specific conversations between owners and assigned workers.",
+  "frontend/src/pages/ProfilePage.tsx": "User profile page with editable display name and phone number, principal ID display with copy functionality, role badge, and role-specific statistics.",
+  "frontend/src/index.css": "Global styles with warm neutral color palette using OKLCH color system, featuring sand/amber tones instead of blue/purple, with both light and dark mode support."
+}
