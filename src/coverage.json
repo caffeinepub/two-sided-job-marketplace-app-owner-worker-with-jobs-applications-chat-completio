@@ -1,90 +1,75 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-11T17:15:07.401Z",
+  "generatedAt": "2026-02-12T02:46:15.948Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
+    "total": 3,
     "implemented": 3,
     "items": [
       {
-        "id": "REQ-14",
-        "summary": "Add a phone number field to the user profile data model and persist it per authenticated Principal.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-15",
-        "summary": "Collect and validate a phone number during the profile creation/registration flow (Role Select page) and send it to the backend when creating the profile.",
+        "id": "REQ-1",
+        "summary": "Add an install/download entry point in the UI that lets users install the PWA for cantering-7xu.caffeine.xyz from the browser, including a visible \"Install app\" button on the unauthenticated landing (Splash) screen.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/RoleSelectPage.tsx"
+          "frontend/src/components/pwa/PwaInstallProvider.tsx",
+          "frontend/src/hooks/usePwaInstall.ts",
+          "frontend/src/pages/SplashPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/RoleSelectPage.tsx"
+          "frontend/src/components/pwa/PwaInstallProvider.tsx",
+          "frontend/src/hooks/usePwaInstall.ts",
+          "frontend/src/pages/SplashPage.tsx"
         ]
       },
       {
-        "id": "REQ-16",
-        "summary": "Show the saved phone number on the Profile page and allow the user to edit and save it (alongside display name) using the same profile-save mechanism.",
+        "id": "REQ-2",
+        "summary": "Provide an install instructions UI (modal/drawer/page) with English step-by-step instructions for Android (Chrome), iPhone/iPad (Safari), and desktop (Chrome/Edge), and include a copyable URL string for \"https://cantering-7xu.caffeine.xyz\".",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/ProfilePage.tsx"
+          "frontend/src/components/pwa/InstallInstructionsDialog.tsx",
+          "frontend/src/utils/pwaInstall.ts",
+          "frontend/src/components/pwa/PwaInstallProvider.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/ProfilePage.tsx"
+          "frontend/src/components/pwa/InstallInstructionsDialog.tsx",
+          "frontend/src/utils/pwaInstall.ts",
+          "frontend/src/components/pwa/PwaInstallProvider.tsx"
         ]
       },
       {
-        "id": "REQ-17",
-        "summary": "Add a \"workersNeeded\" (how many workers are needed) field to the Job data model, store it for each job, and return it in job queries.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-18",
-        "summary": "Allow owners to select the number of workers needed when creating a job, submit it to the backend, and display it on job details (and anywhere job summary is shown where feasible).",
+        "id": "REQ-3",
+        "summary": "Ensure the PWA install UX is reachable for both unauthenticated and authenticated users (e.g., from SplashPage for logged-out users and from an authenticated navigation location such as the mobile menu or Profile page for logged-in users).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/CreateJobPage.tsx",
-          "frontend/src/pages/JobDetailsPage.tsx",
-          "frontend/src/pages/JobListPage.tsx"
+          "frontend/src/App.tsx",
+          "frontend/src/components/NavBar.tsx",
+          "frontend/src/pages/ProfilePage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/CreateJobPage.tsx",
-          "frontend/src/pages/JobDetailsPage.tsx",
-          "frontend/src/pages/JobListPage.tsx"
+          "frontend/src/App.tsx",
+          "frontend/src/components/NavBar.tsx",
+          "frontend/src/pages/ProfilePage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
-    "build-template/README.md",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/CreateJobPage.tsx",
-    "frontend/src/pages/JobDetailsPage.tsx",
-    "frontend/src/pages/JobListPage.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/NavBar.tsx",
+    "frontend/src/components/pwa/InstallInstructionsDialog.tsx",
+    "frontend/src/components/pwa/PwaInstallProvider.tsx",
+    "frontend/src/hooks/usePwaInstall.ts",
     "frontend/src/pages/ProfilePage.tsx",
-    "frontend/src/pages/RoleSelectPage.tsx",
+    "frontend/src/pages/SplashPage.tsx",
+    "frontend/src/utils/pwaInstall.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

@@ -10,9 +10,9 @@ import Nat "mo:core/Nat";
 import Float "mo:core/Float";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
-import Migration "migration";
 
-(with migration = Migration.run)
+
+
 actor {
   public type UserProfile = {
     principal : Principal;

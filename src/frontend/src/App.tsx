@@ -1,6 +1,7 @@
 import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } from '@tanstack/react-router';
 import { useInternetIdentity } from './hooks/useInternetIdentity';
 import { useCurrentUser } from './hooks/useCurrentUser';
+import { useEffect } from 'react';
 import SplashPage from './pages/SplashPage';
 import RoleSelectPage from './pages/RoleSelectPage';
 import HomePage from './pages/HomePage';
@@ -12,6 +13,7 @@ import ChatPage from './pages/ChatPage';
 import AppLayout from './components/AppLayout';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from 'next-themes';
+import { PwaInstallProvider } from './components/pwa/PwaInstallProvider';
 
 // Root component that handles authentication and role selection flow
 function RootComponent() {
@@ -100,9 +102,27 @@ declare module '@tanstack/react-router' {
 }
 
 export default function App() {
+  // Register service worker
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered:', registration);
+          })
+          .catch((error) => {
+            console.log('SW registration failed:', error);
+          });
+      });
+    }
+  }, []);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <RouterProvider router={router} />
+      <PwaInstallProvider>
+        <RouterProvider router={router} />
+      </PwaInstallProvider>
     </ThemeProvider>
   );
 }

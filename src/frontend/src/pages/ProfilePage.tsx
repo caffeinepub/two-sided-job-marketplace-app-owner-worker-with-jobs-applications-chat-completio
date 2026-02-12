@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { usePwaInstall } from '../hooks/usePwaInstall';
 import {
   useGetCallerUserProfile,
   useSaveCallerUserProfile,
@@ -12,12 +13,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { User, Briefcase, CheckCircle, Clock, DollarSign, Star, Copy, Check } from 'lucide-react';
+import { User, Briefcase, CheckCircle, Clock, DollarSign, Star, Copy, Check, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { JobStatus, PayoutStatus } from '../backend';
 
 export default function ProfilePage() {
   const { identity, isOwner, isWorker } = useCurrentUser();
+  const { requestInstall, isInstalled } = usePwaInstall();
   const { data: userProfile } = useGetCallerUserProfile();
   const { data: jobs = [] } = useGetAllJobs();
   const { data: payouts = [] } = useGetPayoutsForWorker(identity?.getPrincipal() || null);
@@ -83,6 +85,10 @@ export default function ProfilePage() {
     setCopied(true);
     toast.success('Principal ID copied!');
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleInstall = async () => {
+    await requestInstall();
   };
 
   return (
@@ -191,6 +197,22 @@ export default function ProfilePage() {
               </div>
             </>
           )}
+
+          {!isInstalled && (
+            <>
+              <Separator />
+              <div className="space-y-2">
+                <Label>Install App</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Install JobConnect on your device for quick access and a better experience
+                </p>
+                <Button onClick={handleInstall} variant="outline" className="w-full sm:w-auto">
+                  <Download className="h-4 w-4 mr-2" />
+                  Install JobConnect App
+                </Button>
+              </div>
+            </>
+          )}
         </CardContent>
       </Card>
 
@@ -232,76 +254,63 @@ export default function ProfilePage() {
       )}
 
       {isWorker && (
-        <>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5" />
-                Work Statistics
-              </CardTitle>
-              <CardDescription>Overview of your work history</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-sm">Active Jobs</span>
-                  </div>
-                  <p className="text-3xl font-bold">{activeWork.length}</p>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5" />
+              Work Statistics
+            </CardTitle>
+            <CardDescription>Overview of your work activity</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">Active Jobs</span>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <CheckCircle className="h-4 w-4" />
-                    <span className="text-sm">Completed</span>
-                  </div>
-                  <p className="text-3xl font-bold">{completedWork.length}</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Briefcase className="h-4 w-4" />
-                    <span className="text-sm">Total Jobs</span>
-                  </div>
-                  <p className="text-3xl font-bold">{myAssignments.length}</p>
-                </div>
+                <p className="text-3xl font-bold">{activeWork.length}</p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm">Completed</span>
+                </div>
+                <p className="text-3xl font-bold">{completedWork.length}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5" />
-                Payout Summary
-              </CardTitle>
-              <CardDescription>Track your earnings</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <CheckCircle className="h-4 w-4" />
-                    <span className="text-sm">Paid</span>
-                  </div>
-                  <p className="text-3xl font-bold">{paidPayouts.length}</p>
-                  <p className="text-sm text-muted-foreground">
-                    ${paidPayouts.reduce((sum, p) => sum + Number(p.amount), 0).toLocaleString()}
-                  </p>
+      {isWorker && payouts.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              Earnings
+            </CardTitle>
+            <CardDescription>Your payment status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm">Paid</span>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-sm">Pending</span>
-                  </div>
-                  <p className="text-3xl font-bold">{unpaidPayouts.length}</p>
-                  <p className="text-sm text-muted-foreground">
-                    ${unpaidPayouts.reduce((sum, p) => sum + Number(p.amount), 0).toLocaleString()}
-                  </p>
-                </div>
+                <p className="text-3xl font-bold">{paidPayouts.length}</p>
               </div>
-            </CardContent>
-          </Card>
-        </>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">Pending</span>
+                </div>
+                <p className="text-3xl font-bold">{unpaidPayouts.length}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

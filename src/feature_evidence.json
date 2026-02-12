@@ -2,11 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-collect-and-validate-a-phone-number-during-the-profile-creation-registration-flow-role-select-page-and-send-it-to-the-backend-when-creating-the-profile",
-      "featureTitle": "Collect and validate a phone number during the profile creation/registration flow (Role Select page) and send it to the backend when creating the profile.",
+      "featureId": "feature-add-an-install-download-entry-point-in-the-ui-that-lets-users-install-the-pwa-for-cantering-7xu-caffeine-xyz-from-the-browser-including-a-visible-install-app-button-on-the-unauthenticated-landing-splash-screen",
+      "featureTitle": "Add an install/download entry point in the UI that lets users install the PWA for cantering-7xu.caffeine.xyz from the browser, including a visible \"Install app\" button on the unauthenticated landing (Splash) screen.",
       "files": [
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/RoleSelectPage.tsx"
+        "frontend/src/components/pwa/PwaInstallProvider.tsx",
+        "frontend/src/hooks/usePwaInstall.ts",
+        "frontend/src/pages/SplashPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -17,14 +18,37 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-15"
+        "REQ-1"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-show-the-saved-phone-number-on-the-profile-page-and-allow-the-user-to-edit-and-save-it-alongside-display-name-using-the-same-profile-save-mechanism",
-      "featureTitle": "Show the saved phone number on the Profile page and allow the user to edit and save it (alongside display name) using the same profile-save mechanism.",
+      "featureId": "feature-provide-an-install-instructions-ui-modal-drawer-page-with-english-step-by-step-instructions-for-android-chrome-iphone-ipad-safari-and-desktop-chrome-edge-and-include-a-copyable-url-string-for-https-cantering-7xu-caffeine-xyz",
+      "featureTitle": "Provide an install instructions UI (modal/drawer/page) with English step-by-step instructions for Android (Chrome), iPhone/iPad (Safari), and desktop (Chrome/Edge), and include a copyable URL string for \"https://cantering-7xu.caffeine.xyz\".",
       "files": [
+        "frontend/src/components/pwa/InstallInstructionsDialog.tsx",
+        "frontend/src/components/pwa/PwaInstallProvider.tsx",
+        "frontend/src/utils/pwaInstall.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-pwa-install-ux-is-reachable-for-both-unauthenticated-and-authenticated-users-e-g-from-splashpage-for-logged-out-users-and-from-an-authenticated-navigation-location-such-as-the-mobile-menu-or-profile-page-for-logged-in-users",
+      "featureTitle": "Ensure the PWA install UX is reachable for both unauthenticated and authenticated users (e.g., from SplashPage for logged-out users and from an authenticated navigation location such as the mobile menu or Profile page for logged-in users).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/NavBar.tsx",
         "frontend/src/pages/ProfilePage.tsx"
       ],
       "components": [
@@ -36,29 +60,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-16"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-allow-owners-to-select-the-number-of-workers-needed-when-creating-a-job-submit-it-to-the-backend-and-display-it-on-job-details-and-anywhere-job-summary-is-shown-where-feasible",
-      "featureTitle": "Allow owners to select the number of workers needed when creating a job, submit it to the backend, and display it on job details (and anywhere job summary is shown where feasible).",
-      "files": [
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/CreateJobPage.tsx",
-        "frontend/src/pages/JobDetailsPage.tsx",
-        "frontend/src/pages/JobListPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-18"
+        "REQ-3"
       ],
       "confidence": "high"
     }

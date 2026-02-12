@@ -1,124 +1,74 @@
 {
   "kind": "build_request",
-  "title": "Add phone number to registration/profile and add workers-needed field to jobs",
+  "title": "Add user-facing install/download link and PWA install instructions for cantering-7xu.caffeine.xyz",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-14",
-      "text": "Add a phone number field to the user profile data model and persist it per authenticated Principal.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "Pls add aa phone number to register"
-        ]
-      },
-      "acceptanceCriteria": [
-        "`UserProfile` in `backend/main.mo` includes a phone number field (stored with each profile).",
-        "`saveCallerUserProfile` stores the caller’s phone number in the profile record.",
-        "`getCallerUserProfile` / `getUserProfile` return the phone number field as part of the profile."
-      ]
-    },
-    {
-      "id": "REQ-15",
-      "text": "Collect and validate a phone number during the profile creation/registration flow (Role Select page) and send it to the backend when creating the profile.",
+      "id": "REQ-1",
+      "text": "Add an install/download entry point in the UI that lets users install the PWA for cantering-7xu.caffeine.xyz from the browser, including a visible \"Install app\" button on the unauthenticated landing (Splash) screen.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-1"
         ],
         "quotes": [
-          "Pls add aa phone number to register"
+          "Create me this link to app to download cantering-7xu.caffeine.xyz"
         ]
       },
       "acceptanceCriteria": [
-        "RoleSelectPage shows an additional input labeled \"Phone Number\".",
-        "Submitting the form without a phone number shows an English validation error and does not submit.",
-        "The phone number value is passed through React Query (`useSaveCallerUserProfile`) to the backend save profile method.",
-        "On success, the user proceeds as before (profile created and navigated to home)."
+        "When visiting the app while logged out, SplashPage shows a clearly labeled \"Install app\" button in addition to \"Get Started\".",
+        "On supported browsers (e.g., Chrome/Edge), clicking \"Install app\" triggers the native PWA install prompt when available (using the beforeinstallprompt flow).",
+        "If the native install prompt is not available (e.g., iOS Safari), clicking \"Install app\" opens an instructions UI instead of failing silently."
       ]
     },
     {
-      "id": "REQ-16",
-      "text": "Show the saved phone number on the Profile page and allow the user to edit and save it (alongside display name) using the same profile-save mechanism.",
+      "id": "REQ-2",
+      "text": "Provide an install instructions UI (modal/drawer/page) with English step-by-step instructions for Android (Chrome), iPhone/iPad (Safari), and desktop (Chrome/Edge), and include a copyable URL string for \"https://cantering-7xu.caffeine.xyz\".",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-1"
         ],
         "quotes": [
-          "Pls add aa phone number to register"
+          "Create me this link to app to download cantering-7xu.caffeine.xyz"
         ]
       },
       "acceptanceCriteria": [
-        "ProfilePage displays the current phone number when a profile exists.",
-        "ProfilePage provides an edit UI that allows changing the phone number and saving it.",
-        "Saving updates the backend profile and refreshes the `currentUserProfile` query so the updated phone number is shown."
+        "The instructions UI contains separate sections for Android, iOS, and Desktop with clear steps (e.g., \"Share\" → \"Add to Home Screen\" on iOS).",
+        "The UI displays the full URL \"https://cantering-7xu.caffeine.xyz\" and provides a one-click copy action with a confirmation message.",
+        "If the install prompt is available, the UI still offers a fallback link to view instructions."
       ]
     },
     {
-      "id": "REQ-17",
-      "text": "Add a \"workersNeeded\" (how many workers are needed) field to the Job data model, store it for each job, and return it in job queries.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "ower wants to select the how may workers want please add it"
-        ]
-      },
-      "acceptanceCriteria": [
-        "`Job` in `backend/main.mo` includes a `workersNeeded` field.",
-        "`createJob` accepts a `workersNeeded` parameter and stores it on the created job.",
-        "Backend validates `workersNeeded` is at least 1 (reject invalid values with a clear error).",
-        "`getAllJobs` and `getJobById` include `workersNeeded` in returned job records."
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "text": "Allow owners to select the number of workers needed when creating a job, submit it to the backend, and display it on job details (and anywhere job summary is shown where feasible).",
+      "id": "REQ-3",
+      "text": "Ensure the PWA install UX is reachable for both unauthenticated and authenticated users (e.g., from SplashPage for logged-out users and from an authenticated navigation location such as the mobile menu or Profile page for logged-in users).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-1"
         ],
         "quotes": [
-          "ower wants to select the how may workers want please add it"
+          "Create me this link to app to download cantering-7xu.caffeine.xyz"
         ]
       },
       "acceptanceCriteria": [
-        "CreateJobPage includes a required numeric input labeled \"Workers Needed\" with a minimum value of 1.",
-        "Create job submission includes `workersNeeded` in the mutation payload and calls the updated backend method.",
-        "JobDetailsPage displays the number of workers needed for the job in the job information section.",
-        "If job list items already show job metadata, they also show workers needed (or the field is shown at least on Job Details, even if not added to list UI)."
+        "Logged-in users can access the same install instructions UI from within the app (without logging out).",
+        "The install entry point does not break existing navigation/auth flows and works on both mobile and desktop layouts."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor (`backend/main.mo`) with no additional backend services.",
-    "Do not edit any files under `frontend/src/components/ui` or other `frontend.immutablePaths`; compose existing UI components instead.",
-    "Keep existing job assignment behavior (currently assigns exactly one worker) unless explicitly requested otherwise."
+    "Do not edit files under frontend/src/components/ui (read-only Shadcn components); compose them instead.",
+    "Do not modify frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths).",
+    "Keep all backend logic in the existing single Motoko actor (no new backend services)."
   ],
   "nonGoals": [
-    "Implementing true multi-worker assignment (assigning multiple workers to one job) or changing application/assignment logic beyond adding the `workersNeeded` field.",
-    "Adding SMS/phone verification or any external messaging/telephony integration.",
-    "Adding third-party authentication beyond Internet Identity."
+    "Implementing a native App Store / Google Play store download flow.",
+    "Adding third-party analytics or external SDKs for install tracking.",
+    "Changing the existing PWA manifest/service worker behavior unless required to support the new install/instructions UI."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

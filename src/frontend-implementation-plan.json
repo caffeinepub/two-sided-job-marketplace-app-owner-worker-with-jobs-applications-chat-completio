@@ -1,75 +1,82 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add phone number to profile flows and workers-needed to job creation/details (frontend)",
+  "title": "Add PWA install entry points and install instructions UI for cantering-7xu.caffeine.xyz",
   "requirements": [
     {
-      "id": "REQ-15",
-      "summary": "Collect and validate phone number during Role Select profile creation and submit it via React Query save-profile mutation.",
+      "id": "REQ-1",
+      "summary": "Add an unauthenticated SplashPage \"Install app\" button that triggers the native PWA install prompt when available, otherwise opens install instructions.",
       "acceptanceCriteria": [
-        "RoleSelectPage shows an additional input labeled \"Phone Number\".",
-        "Submitting the form without a phone number shows an English validation error and does not submit.",
-        "The phone number value is passed through React Query (`useSaveCallerUserProfile`) to the backend save profile method.",
-        "On success, the user proceeds as before (profile created and navigated to home)."
+        "When visiting the app while logged out, SplashPage shows a clearly labeled \"Install app\" button in addition to \"Get Started\".",
+        "On supported browsers (e.g., Chrome/Edge), clicking \"Install app\" triggers the native PWA install prompt when available (using the beforeinstallprompt flow).",
+        "If the native install prompt is not available (e.g., iOS Safari), clicking \"Install app\" opens an instructions UI instead of failing silently."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Update `useSaveCallerUserProfile` to accept `phoneNumber` and call the backend save-profile function with `displayName`, `role`, and `phoneNumber`. Ensure the existing `currentUserProfile` invalidation remains in place. Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/pwa/PwaInstallProvider.tsx",
+          "operation": "create",
+          "description": "Create a single, app-wide PWA install controller that listens for the browser beforeinstallprompt event, tracks whether a native install prompt is available, exposes a \"requestInstall\" action, and controls visibility of the install instructions UI. Use shadcn-ui composable primitives for any UI it renders (e.g., Dialog/Sheet), without editing files under frontend/src/components/ui. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/pages/RoleSelectPage.tsx",
+          "path": "frontend/src/hooks/usePwaInstall.ts",
+          "operation": "create",
+          "description": "Create a hook that exposes PWA install state/actions from the PwaInstallProvider (e.g., canPromptInstall, requestInstall(), openInstructions()). This should be usable from SplashPage and authenticated navigation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/SplashPage.tsx",
           "operation": "modify",
-          "description": "Add a required \"Phone Number\" input to the registration/profile creation form, add client-side validation (show an English error via existing toast on missing/invalid value), and include `phoneNumber` in the `useSaveCallerUserProfile().mutateAsync` payload while keeping navigation behavior unchanged on success. Verify the component's usage instructions before implementing."
+          "description": "Add a clearly labeled \"Install app\" button alongside the existing \"Get Started\" button. Wire the click handler to usePwaInstall(): if a native install prompt is available, trigger it; otherwise open the instructions UI (and ensure it never fails silently). Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-16",
-      "summary": "Display the saved phone number on Profile page and allow editing/saving it using the existing profile-save flow.",
+      "id": "REQ-2",
+      "summary": "Provide an install instructions UI with Android/iOS/Desktop step-by-step guidance and a copyable https://cantering-7xu.caffeine.xyz URL.",
       "acceptanceCriteria": [
-        "ProfilePage displays the current phone number when a profile exists.",
-        "ProfilePage provides an edit UI that allows changing the phone number and saving it.",
-        "Saving updates the backend profile and refreshes the `currentUserProfile` query so the updated phone number is shown."
+        "The instructions UI contains separate sections for Android, iOS, and Desktop with clear steps (e.g., \"Share\" → \"Add to Home Screen\" on iOS).",
+        "The UI displays the full URL \"https://cantering-7xu.caffeine.xyz\" and provides a one-click copy action with a confirmation message.",
+        "If the install prompt is available, the UI still offers a fallback link to view instructions."
       ],
       "file_operations": [
+        {
+          "path": "frontend/src/components/pwa/InstallInstructionsDialog.tsx",
+          "operation": "create",
+          "description": "Implement an install instructions UI (modal or drawer) containing separate sections for Android (Chrome), iPhone/iPad (Safari), and Desktop (Chrome/Edge), plus a displayed \"https://cantering-7xu.caffeine.xyz\" string with a one-click copy action and confirmation feedback (use existing toast system). Compose with shadcn-ui components (e.g., Dialog/Sheet, Tabs/Accordion, Button, Input) without editing frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/pwaInstall.ts",
+          "operation": "create",
+          "description": "Add small utilities for PWA install UX (e.g., platform detection helpers for iOS Safari vs Android/desktop, and a safe clipboard copy helper) to keep UI components clean and ensure consistent copy-confirmation behavior."
+        },
+        {
+          "path": "frontend/src/components/pwa/PwaInstallProvider.tsx",
+          "operation": "modify",
+          "description": "Wire the InstallInstructionsDialog into the provider so it can be opened from anywhere, including when the native prompt is available (as a fallback \"View instructions\" action). Ensure the provider exposes a way to open the dialog explicitly. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Make PWA install UX reachable for both logged-out and logged-in users via authenticated navigation (mobile menu and/or Profile).",
+      "acceptanceCriteria": [
+        "Logged-in users can access the same install instructions UI from within the app (without logging out).",
+        "The install entry point does not break existing navigation/auth flows and works on both mobile and desktop layouts."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the application in PwaInstallProvider so install state and the shared instructions UI are available on both unauthenticated (SplashPage) and authenticated (AppLayout/NavBar/ProfilePage) surfaces. Ensure existing auth/role routing behavior remains unchanged. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/NavBar.tsx",
+          "operation": "modify",
+          "description": "Add an authenticated entry point to the install UX (at minimum in the mobile Sheet menu; optionally also in the desktop nav) that calls usePwaInstall() to either trigger native install or open instructions. Keep navigation intact and close the mobile menu after selection. Verify the component's usage instructions before implementing."
+        },
         {
           "path": "frontend/src/pages/ProfilePage.tsx",
           "operation": "modify",
-          "description": "Extend the Personal Information section to show `userProfile.phoneNumber` when not editing, and add an edit UI (alongside display name) to change phone number and save. Reuse `useSaveCallerUserProfile` and ensure validation prevents saving when phone number is empty (and optionally basic format validation). Confirm save triggers `currentUserProfile` refresh and updated phone number is displayed. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "summary": "Add Workers Needed input to Create Job form, submit it in create-job mutation, and display workers needed in job details and list summaries where feasible.",
-      "acceptanceCriteria": [
-        "CreateJobPage includes a required numeric input labeled \"Workers Needed\" with a minimum value of 1.",
-        "Create job submission includes `workersNeeded` in the mutation payload and calls the updated backend method.",
-        "JobDetailsPage displays the number of workers needed for the job in the job information section.",
-        "If job list items already show job metadata, they also show workers needed (or the field is shown at least on Job Details, even if not added to list UI)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Update `useCreateJob` to accept `workersNeeded` in its mutation variables and call the backend create-job function with the new argument order including `workersNeeded`. Keep the existing jobs query invalidation. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/CreateJobPage.tsx",
-          "operation": "modify",
-          "description": "Add a required numeric input labeled \"Workers Needed\" (min 1). Add state + validation to prevent submit when missing/invalid, convert to `BigInt` for the mutation payload, and pass `workersNeeded` into `createJob.mutateAsync` along with existing fields. Keep existing job assignment behavior unchanged. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/JobDetailsPage.tsx",
-          "operation": "modify",
-          "description": "Display `job.workersNeeded` in the job information section (near other metadata like pay/location) so users can see how many workers are needed. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/JobListPage.tsx",
-          "operation": "modify",
-          "description": "Where feasible within the existing card metadata area, display `job.workersNeeded` (e.g., alongside other quick facts) so list items show workers needed in addition to title/pay/location/date. Verify the component's usage instructions before implementing."
+          "description": "Add an \"Install app\" entry point within the authenticated Profile page that opens the same instructions UI (and triggers native prompt when available via usePwaInstall()). Ensure this integrates with existing layout and does not interfere with profile editing/copy principal interactions. Verify the component's usage instructions before implementing."
         }
       ]
     }
